@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home Page</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="page-header">
+            <h1>Welcome {{current_user.user_name}}!         <small>  Ready to Plan a Trip?</small></h1>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h3>All Trips</h3>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Destination</th>
+                            <th>Description</th>
+                            <th>Travel Start Date</th>
+                            <th>Travel End Date</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {% for trip in trips %}
+                            <td><a href="destination/{{trip.id}}">{{trip.destination}}</a></td>
+                            <td>{{trip.description}}</td>
+                            <td>{{trip.start_date}}</td>
+                            <td>{{trip.end_date}}</td>
+
+
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Destination</th>
+                            <th>Description</th>
+                            <th>Travel Start Date</th>
+                            <th>Travel End Date</th>
+                            <th>Going?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <h3>Your Trips</h3>
+                        <tr>
+                            {% for t in my_trips %}
+                            <td><a href="destination/{{t.id}}">{{t.destination}}</td>
+                            <td>{{t.description}}</td>
+                            <td>{{t.start_date}}</td>
+                            <td>{{t.end_date}}</td>
+                            {% if t.join != 'true'  %}
+                            <td><form action="/join/{{t.id}}" method="post">{% csrf_token %}<button>Join</button> </form> 
+                            {% else %}
+                             <td><form action="/not_join/{{t.id}}" method="post">{% csrf_token %}<button>Leave</button> </form>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+<a href="/add_trip{{t.id}}">Add Trip</a>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <a href="/logout">Log Out</a>
+</body>
+
+</html>
